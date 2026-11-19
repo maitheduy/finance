@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owns(userId) {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.uid == userId;
+    }
+
+    match /{collectionId}/{documentId} {
+      function financeCollection() {
+        return collectionId in ['transactions', 'recurringBills', 'budgets'];
+      }
+      allow read, delete: if financeCollection() && owns(resource.data.userId);
+      allow create: if financeCollection() && owns(request.resource.data.userId);
+      allow update: if financeCollection()
+        && owns(resource.data.userId) && owns(request.resource.data.userId);
+    }
+  }
+}

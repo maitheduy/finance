@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "Transaction": {
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "familyId": { "type": "string" },
+        "type": { "type": "string", "enum": ["income", "expense"] },
+        "amount": { "type": "number", "minimum": 0 },
+        "category": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 200 },
+        "date": { "type": "string" },
+        "memberName": { "type": "string", "maxLength": 50 },
+        "wallet": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "amount", "category", "date"]
+    },
+    "RecurringBill": {
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "familyId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 100 },
+        "amount": { "type": "number", "minimum": 0 },
+        "category": { "type": "string" },
+        "frequency": { "type": "string", "enum": ["monthly", "weekly", "yearly"] },
+        "dueDate": { "type": "number", "minimum": 1, "maximum": 31 },
+        "status": { "type": "string", "enum": ["pending", "paid"] },
+        "lastPaidDate": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "amount", "dueDate", "status"]
+    },
+    "Budget": {
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "familyId": { "type": "string" },
+        "category": { "type": "string" },
+        "monthlyLimit": { "type": "number", "minimum": 0 },
+        "month": { "type": "string" }
+      },
+      "required": ["id", "userId", "category", "monthlyLimit", "month"]
+    }
+  },
+  "firestore": {
+    "paths": {
+      "transactions": {
+        "schema": "Transaction",
+        "read": "request.auth != null && resource.data.userId == request.auth.uid",
+        "write": "request.auth != null && (resource == null || resource.data.userId == request.auth.uid) && request.resource.data.userId == request.auth.uid"
+      },
+      "recurringBills": {
+        "schema": "RecurringBill",
+        "read": "request.auth != null && resource.data.userId == request.auth.uid",
+        "write": "request.auth != null && (resource == null || resource.data.userId == request.auth.uid) && request.resource.data.userId == request.auth.uid"
+      },
+      "budgets": {
+        "schema": "Budget",
+        "read": "request.auth != null && resource.data.userId == request.auth.uid",
+        "write": "request.auth != null && (resource == null || resource.data.userId == request.auth.uid) && request.resource.data.userId == request.auth.uid"
+      }
+    }
+  }
+}

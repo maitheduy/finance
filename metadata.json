@@ -1,0 +1,6 @@
+{
+  "name": "Quản lý Chi tiêu Gia đình & Tài chính AI",
+  "description": "Ứng dụng quản lý tài chính gia đình thông minh, đồng bộ đa thiết bị, phân tích biểu đồ, nhắc nhở phí cố định, tự động phân loại giao dịch bằng AI đa nhà cung cấp (Gemini, OpenAI, DeepSeek, Grok) và xuất báo cáo tháng.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
